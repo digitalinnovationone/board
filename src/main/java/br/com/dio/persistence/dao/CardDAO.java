@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 import static br.com.dio.persistence.converter.OffsetDateTimeConverter.toOffsetDateTime;
@@ -19,14 +20,24 @@ public class CardDAO {
 
     public CardEntity insert(final CardEntity entity) throws SQLException {
         var sql = "INSERT INTO CARDS (title, description, board_column_id) values (?, ?, ?);";
-        try(var statement = connection.prepareStatement(sql)){
+        try(var statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             var i = 1;
             statement.setString(i ++, entity.getTitle());
             statement.setString(i ++, entity.getDescription());
             statement.setLong(i, entity.getBoardColumn().getId());
-            statement.executeUpdate();
-            if (statement instanceof StatementImpl impl){
-                entity.setId(impl.getLastInsertID());
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating card failed, no rows affected.");
+            }
+
+            try (var generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating card failed, no ID obtained.");
+                }
             }
         }
         return entity;
