@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,15 +23,25 @@ public class BoardColumnDAO {
 
     public BoardColumnEntity insert(final BoardColumnEntity entity) throws SQLException {
         var sql = "INSERT INTO BOARDS_COLUMNS (name, `order`, kind, board_id) VALUES (?, ?, ?, ?);";
-        try(var statement = connection.prepareStatement(sql)){
+        try(var statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             var i = 1;
             statement.setString(i ++, entity.getName());
             statement.setInt(i ++, entity.getOrder());
             statement.setString(i ++, entity.getKind().name());
             statement.setLong(i, entity.getBoard().getId());
-            statement.executeUpdate();
-            if (statement instanceof StatementImpl impl){
-                entity.setId(impl.getLastInsertID());
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating card failed, no rows affected.");
+            }
+
+            try (var generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating card failed, no ID obtained.");
+                }
             }
             return entity;
         }
@@ -44,12 +55,7 @@ public class BoardColumnDAO {
             statement.executeQuery();
             var resultSet = statement.getResultSet();
             while (resultSet.next()){
-                var entity = new BoardColumnEntity();
-                entity.setId(resultSet.getLong("id"));
-                entity.setName(resultSet.getString("name"));
-                entity.setOrder(resultSet.getInt("order"));
-                entity.setKind(findByName(resultSet.getString("kind")));
-                entities.add(entity);
+                entities.add(toEntity(resultSet));
             }
             return entities;
         }
@@ -123,4 +129,12 @@ public class BoardColumnDAO {
         }
     }
 
+    private BoardColumnEntity toEntity(java.sql.ResultSet resultSet) throws SQLException {
+        var entity = new BoardColumnEntity();
+        entity.setId(resultSet.getLong("id"));
+        entity.setName(resultSet.getString("name"));
+        entity.setOrder(resultSet.getInt("order"));
+        entity.setKind(findByName(resultSet.getString("kind")));
+        return entity;
+    }
 }
