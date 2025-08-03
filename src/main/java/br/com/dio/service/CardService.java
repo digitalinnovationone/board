@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static br.com.dio.persistence.entity.BoardColumnKindEnum.CANCEL;
@@ -114,7 +115,7 @@ public class CardService {
                 throw new IllegalStateException(message);
             }
             var blockDAO = new BlockDAO(connection);
-            blockDAO.block(reason, id);
+            blockDAO.block(reason, id, OffsetDateTime.now());
             connection.commit();
         }catch (SQLException ex) {
             connection.rollback();
@@ -134,7 +135,7 @@ public class CardService {
                 throw new CardBlockedException(message);
             }
             var blockDAO = new BlockDAO(connection);
-            blockDAO.unblock(reason, id);
+            blockDAO.unblock(reason, id, OffsetDateTime.now());
             connection.commit();
         }catch (SQLException ex) {
             connection.rollback();

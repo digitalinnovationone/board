@@ -55,12 +55,7 @@ public class BoardColumnDAO {
             statement.executeQuery();
             var resultSet = statement.getResultSet();
             while (resultSet.next()){
-                var entity = new BoardColumnEntity();
-                entity.setId(resultSet.getLong("id"));
-                entity.setName(resultSet.getString("name"));
-                entity.setOrder(resultSet.getInt("order"));
-                entity.setKind(findByName(resultSet.getString("kind")));
-                entities.add(entity);
+                entities.add(toEntity(resultSet));
             }
             return entities;
         }
@@ -134,4 +129,12 @@ public class BoardColumnDAO {
         }
     }
 
+    private BoardColumnEntity toEntity(java.sql.ResultSet resultSet) throws SQLException {
+        var entity = new BoardColumnEntity();
+        entity.setId(resultSet.getLong("id"));
+        entity.setName(resultSet.getString("name"));
+        entity.setOrder(resultSet.getInt("order"));
+        entity.setKind(findByName(resultSet.getString("kind")));
+        return entity;
+    }
 }
