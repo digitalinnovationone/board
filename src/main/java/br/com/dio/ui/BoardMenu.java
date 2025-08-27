@@ -47,7 +47,8 @@ public class BoardMenu {
                     case 6 -> showBoard();
                     case 7 -> showColumn();
                     case 8 -> showCard();
-                    case 9 -> System.out.println("Voltando para o menu anterior");
+                    case 9 -> { System.out.println("Voltando ao menu principal..."); 
+                    return;  }
                     case 10 -> System.exit(0);
                     default -> System.out.println("Opção inválida, informe uma opção do menu");
                 }

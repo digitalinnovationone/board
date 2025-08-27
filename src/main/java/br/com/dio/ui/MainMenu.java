@@ -34,7 +34,10 @@ public class MainMenu {
                 case 1 -> createBoard();
                 case 2 -> selectBoard();
                 case 3 -> deleteBoard();
-                case 4 -> System.exit(0);
+                case 4 -> {
+                    System.out.println("Encerrando o sistema. Até logo!");
+                    return;
+                    }
                 default -> System.out.println("Opção inválida, informe uma opção do menu");
             }
         }
