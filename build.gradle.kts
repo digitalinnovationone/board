@@ -21,3 +21,11 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+// Configure a classe principal do seu aplicativo
+tasks.shadowJar {
+    manifest {
+        attributes["Main-Class"] = "br.com.dio.Main" // Substitua pelo caminho completo da sua classe principal
+    }
+    archiveClassifier.set("") // Remove o sufixo "-all" do nome do arquivo
+}
