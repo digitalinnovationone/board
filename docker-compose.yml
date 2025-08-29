@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  # Serviço para a aplicação Java
+  app:
+    # Nome do serviço no Docker
+    container_name: board-dio-app
+    # Usa o Dockerfile para construir a imagem
+    build: .
+    # Mapeia portas (opcional para esta aplicação, mas útil para APIs)
+    ports:
+      - "8080:8080"
+    # Reinicia o contêiner se ele parar
+    restart: always
+    # Define variáveis de ambiente para a aplicação se conectar ao banco de dados
+    environment:
+      - DB_HOST=db
+      - DB_USER=board
+      - DB_PASSWORD=board
+      - DB_NAME=board
+    # Garante que a aplicação só inicie depois que o banco de dados estiver pronto
+    # O formato correto para depends_on é uma lista de serviços
+    depends_on:
+      - db        
+    volumes:
+      - ~/.gradle:/root/.gradle # Mapeia o cache do Gradle do host para o contêiner
+      
+  # Serviço para o banco de dados MySQL
+  db:
+    # Nome do serviço no Docker
+    container_name: board-dio-db
+    # Usa a imagem oficial do MySQL
+    image: mysql:8.0
+    # Mapeia a porta do MySQL para a máquina local para fácil acesso
+    ports:
+      - "3306:3306"
+    # Define variáveis de ambiente para a configuração do banco
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password # Senha do usuário root
+      - MYSQL_DATABASE=board # Nome do banco de dados
+      - MYSQL_USER=board # Nome do usuário
+      - MYSQL_PASSWORD=board # Senha do usuário
+    # Define a verificação de saúde para garantir que o banco está pronto
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Mantém os dados persistentes mesmo se o contêiner for removido
+    volumes:
+      - board-data:/var/lib/mysql
+
+# Volumes para persistir os dados do banco de dados
+volumes:
+  board-data:
