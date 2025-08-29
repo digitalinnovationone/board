@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   # Serviço para a aplicação Java
   app:
@@ -11,7 +10,9 @@ services:
     ports:
       - "8080:8080"
     # Reinicia o contêiner se ele parar
-    restart: always
+    restart: "no"  # Mudado para não reiniciar automaticamente em aplicações interativas
+    stdin_open: true # Mantém a entrada padrão (stdin) aberta
+    tty: true       # Aloca um pseudo-TTY
     # Define variáveis de ambiente para a aplicação se conectar ao banco de dados
     environment:
       - DB_HOST=db
@@ -40,6 +41,14 @@ services:
       - MYSQL_DATABASE=board # Nome do banco de dados
       - MYSQL_USER=board # Nome do usuário
       - MYSQL_PASSWORD=board # Senha do usuário
+      # Configurações adicionais para permitir acesso externo
+      - MYSQL_ROOT_HOST=% # Permite conexões root de qualquer host
+    # Adiciona argumentos de comando para configurar o MySQL
+    command: >
+      --bind-address=0.0.0.0
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
     # Define a verificação de saúde para garantir que o banco está pronto
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -49,7 +58,8 @@ services:
     # Mantém os dados persistentes mesmo se o contêiner for removido
     volumes:
       - board-data:/var/lib/mysql
-
+      # Opcional: script de inicialização para configurar permissões
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 # Volumes para persistir os dados do banco de dados
 volumes:
   board-data:
