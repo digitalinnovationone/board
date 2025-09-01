@@ -51,7 +51,7 @@ services:
       --collation-server=utf8mb4_unicode_ci
     # Define a verificação de saúde para garantir que o banco está pronto
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "vmlinuxd"]
       interval: 10s
       timeout: 5s
       retries: 5

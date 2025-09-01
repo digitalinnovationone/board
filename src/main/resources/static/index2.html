@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Board Management ---- </title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Board Management System</h1>
+    <div id="app">
+        <button onclick="loadBoards()">Carregar Boards</button>
+        <div id="content"></div>
+    </div>
+
+    <script>
+        async function loadBoards() {
+            try {
+                const response = await fetch('/api/boards');
+                const data = await response.json();
+                document.getElementById('content').innerHTML = 
+                '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+    </script>
+</body>
+</html>

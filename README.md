@@ -1,7 +1,7 @@
 <!-- 
   Tags: Dev
   Label: ☯ Board
-  Description: Board
+  Description: 🏆 Board
   path_hook: hookfigma.hook7
 -->
 
@@ -147,8 +147,8 @@ docker-compose up -d db && docker-compose run --rm --no-deps app
 **Configuração do Banco:**
 ```sql
 CREATE DATABASE board;
-CREATE USER 'board'@'localhost' IDENTIFIED BY 'board';
-GRANT ALL PRIVILEGES ON board.* TO 'board'@'localhost';
+CREATE USER 'board'@'vmlinuxd' IDENTIFIED BY 'board';
+GRANT ALL PRIVILEGES ON board.* TO 'board'@'vmlinuxd';
 ```
 
 **Execução:**

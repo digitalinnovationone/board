@@ -7,7 +7,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 -- Garantir que o usuário board pode acessar de qualquer host
 CREATE USER IF NOT EXISTS 'board'@'%' IDENTIFIED BY 'board';
 GRANT ALL PRIVILEGES ON board.* TO 'board'@'%';
-GRANT ALL PRIVILEGES ON board.* TO 'board'@'localhost';
+GRANT ALL PRIVILEGES ON board.* TO 'board'@'vmlinuxd';
 
 -- Aplicar as alterações
 FLUSH PRIVILEGES;
