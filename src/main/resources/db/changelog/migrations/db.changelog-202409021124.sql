@@ -1,32 +1,27 @@
 --liquibase formatted sql
---changeset junior:202509021124
---comment: inserts for kanban tables
+--changeset Fabiano:202509021200
+--comment: inserts for kanban tables with correct enum values
 
--- Inserir dados na tabela BOARDS
-INSERT INTO BOARDS (id, name) VALUES (1, 'Projeto Kanban Exemplo');
+-- Inserir board exemplo
+INSERT INTO BOARDS (name) VALUES ('Projeto Kanban Exemplo');
 
--- Inserir dados na tabela BOARDS_COLUMNS
--- To Do (Ordem 0)
-INSERT INTO BOARDS_COLUMNS (id, name, `order`, kind, board_id) VALUES (1, 'A Fazer', 0, 'TODO', 1);
+-- Inserir colunas do board (usando os enum corretos do Java)
+INSERT INTO BOARDS_COLUMNS (name, `order`, kind, board_id) 
+VALUES 
+('A Fazer', 0, 'INITIAL', 1),
+('Em Andamento', 1, 'PENDING', 1),
+('Concluido', 2, 'FINAL', 1),
+('Cancelado', 3, 'CANCEL', 1);
 
--- In Progress (Ordem 1)
-INSERT INTO BOARDS_COLUMNS (id, name, `order`, kind, board_id) VALUES (2, 'Em Andamento', 1, 'IN_PROGRESS', 1);
+-- Inserir cards de exemplo
+INSERT INTO CARDS (title, description, board_column_id) 
+VALUES 
+('Configurar o ambiente', 'Instalar dependencias e configurar o ambiente de desenvolvimento.', 1),
+('Criar a API de usuarios', 'Desenvolver os endpoints para gerenciar usuarios.', 1),
+('Implementar autenticacao', 'Desenvolver a logica de login e JWT para autenticacao.', 2),
+('Modelar o banco de dados', 'Criar as tabelas para o projeto e as relacoes entre elas.', 3),
+('Preparar o Dockerfile', 'Escrever o Dockerfile para conteinerizar a aplicacao.', 3);
 
--- Done (Ordem 2)
-INSERT INTO BOARDS_COLUMNS (id, name, `order`, kind, board_id) VALUES (3, 'Concluído', 2, 'DONE', 1);
-
--- Inserir dados na tabela CARDS
--- Cards para a coluna 'A Fazer'
-INSERT INTO CARDS (id, title, description, board_column_id) VALUES (1, 'Configurar o ambiente', 'Instalar dependências e configurar o ambiente de desenvolvimento.', 1);
-INSERT INTO CARDS (id, title, description, board_column_id) VALUES (2, 'Criar a API de usuários', 'Desenvolver os endpoints para gerenciar usuários.', 1);
-
--- Cards para a coluna 'Em Andamento'
-INSERT INTO CARDS (id, title, description, board_column_id) VALUES (3, 'Implementar autenticação', 'Desenvolver a lógica de login e JWT para autenticação.', 2);
-
--- Cards para a coluna 'Concluído'
-INSERT INTO CARDS (id, title, description, board_column_id) VALUES (4, 'Modelar o banco de dados', 'Criar as tabelas para o projeto e as relações entre elas.', 3);
-INSERT INTO CARDS (id, title, description, board_column_id) VALUES (5, 'Preparar o Dockerfile', 'Escrever o Dockerfile para conteinerizar a aplicação.', 3);
-
--- Inserir dados na tabela BLOCKS
--- Bloquear o card de "Implementar autenticação"
-INSERT INTO BLOCKS (id, blocked_at, block_reason, card_id) VALUES (1, NOW(), 'Aguardando revisão do código.', 3);
+-- Bloquear um card de exemplo
+INSERT INTO BLOCKS (blocked_at, block_reason, card_id) 
+VALUES (NOW(), 'Aguardando revisao do codigo.', 3);
