@@ -7,6 +7,10 @@
 
 # Board Management System - DIO Challenge
 
+<p align="center">
+  <img src="/images/screenshot.png" alt="imagem do Projeto">
+</p>
+
 Sistema de gerenciamento de boards estilo Kanban desenvolvido em Java, utilizando arquitetura em camadas com padrão DAO e migrations com Liquibase.
 
 ## Visão Geral
