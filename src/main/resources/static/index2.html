@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #26d0ce, #1dd1a1);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(29, 209, 161, 0.4);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .column {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 200px;
+            border-left: 4px solid #667eea;
+        }
+
+        .column h3 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .card-item:hover {
+            transform: translateX(5px);
+        }
+
+        .card-blocked {
+            border-left-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-blocked {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .board-actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #fcc;
+        }
+
+        .success {
+            background: #efe;
+            color: #363;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #cfc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Board Management System</h1>
+            <p>Sistema de gerenciamento de boards Kanban</p>
+        </div>
+
+        <div class="card">
+            <div class="board-actions">
+                <button class="btn" onclick="showCreateBoardModal()">Criar Novo Board</button>
+                <button class="btn" onclick="showSelectBoardModal()">Selecionar Board</button>
+                <button class="btn btn-danger" onclick="showDeleteBoardModal()">Excluir Board</button>
+            </div>
+        </div>
+
+        <div id="boardView" class="hidden">
+            <div class="card">
+                <h2 id="boardTitle">Board: </h2>
+                <div class="board-actions">
+                    <button class="btn" onclick="showCreateCardModal()">Criar Card</button>
+                    <button class="btn" onclick="loadCurrentBoard()">Atualizar</button>
+                    <button class="btn" onclick="backToMain()">Voltar</button>
+                </div>
+            </div>
+            
+            <div id="boardContent" class="board-grid"></div>
+        </div>
+
+        <div id="messages"></div>
+    </div>
+
+    <!-- Modal Criar Board -->
+    <div id="createBoardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createBoardModal')">&times;</span>
+            <h2>Criar Novo Board</h2>
+            <form onsubmit="createBoard(event)">
+                <div class="input-group">
+                    <label for="boardName">Nome do Board:</label>
+                    <input type="text" id="boardName" required>
+                </div>
+                <button type="submit" class="btn">Criar Board</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Selecionar Board -->
+    <div id="selectBoardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('selectBoardModal')">&times;</span>
+            <h2>Selecionar Board</h2>
+            <div class="input-group">
+                <label for="boardId">ID do Board:</label>
+                <input type="number" id="boardId" required>
+            </div>
+            <button class="btn" onclick="selectBoard()">Selecionar</button>
+        </div>
+    </div>
+
+    <!-- Modal Excluir Board -->
+    <div id="deleteBoardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('deleteBoardModal')">&times;</span>
+            <h2>Excluir Board</h2>
+            <div class="input-group">
+                <label for="deleteBoardId">ID do Board:</label>
+                <input type="number" id="deleteBoardId" required>
+            </div>
+            <button class="btn btn-danger" onclick="deleteBoard()">Excluir</button>
+        </div>
+    </div>
+
+    <!-- Modal Criar Card -->
+    <div id="createCardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createCardModal')">&times;</span>
+            <h2>Criar Novo Card</h2>
+            <form onsubmit="createCard(event)">
+                <div class="input-group">
+                    <label for="cardTitle">Título:</label>
+                    <input type="text" id="cardTitle" required>
+                </div>
+                <div class="input-group">
+                    <label for="cardDescription">Descrição:</label>
+                    <textarea id="cardDescription" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn">Criar Card</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Ações do Card -->
+    <div id="cardActionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cardActionModal')">&times;</span>
+            <h2 id="cardActionTitle">Ações do Card</h2>
+            <div id="cardActionContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentBoard = null;
+
+        function showMessage(message, type = 'success') {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            messagesDiv.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        function showCreateBoardModal() {
+            document.getElementById('createBoardModal').style.display = 'block';
+        }
+
+        function showSelectBoardModal() {
+            document.getElementById('selectBoardModal').style.display = 'block';
+        }
+
+        function showDeleteBoardModal() {
+            document.getElementById('deleteBoardModal').style.display = 'block';
+        }
+
+        function showCreateCardModal() {
+            if (!currentBoard) {
+                showMessage('Selecione um board primeiro', 'error');
+                return;
+            }
+            document.getElementById('createCardModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        async function createBoard(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('boardName').value;
+            
+            try {
+                const response = await fetch('/api/boards', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                if (response.ok) {
+                    const board = await response.json();
+                    showMessage(`Board "${name}" criado com sucesso! ID: ${board.id}`);
+                    closeModal('createBoardModal');
+                    document.getElementById('boardName').value = '';
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao criar board', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function selectBoard() {
+            const boardId = document.getElementById('boardId').value;
+            
+            if (!boardId) {
+                showMessage('Informe o ID do board', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/boards/${boardId}`);
+                
+                if (response.ok) {
+                    const board = await response.json();
+                    currentBoard = board;
+                    document.getElementById('boardTitle').textContent = `Board: ${board.name} (ID: ${board.id})`;
+                    document.getElementById('boardView').classList.remove('hidden');
+                    closeModal('selectBoardModal');
+                    document.getElementById('boardId').value = '';
+                    loadCurrentBoard();
+                    showMessage(`Board "${board.name}" selecionado`);
+                } else {
+                    showMessage('Board não encontrado', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function deleteBoard() {
+            const boardId = document.getElementById('deleteBoardId').value;
+            
+            if (!boardId) {
+                showMessage('Informe o ID do board', 'error');
+                return;
+            }
+
+            if (!confirm('Tem certeza que deseja excluir este board?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/boards/${boardId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showMessage('Board excluído com sucesso');
+                    closeModal('deleteBoardModal');
+                    document.getElementById('deleteBoardId').value = '';
+                    
+                    if (currentBoard && currentBoard.id == boardId) {
+                        backToMain();
+                    }
+                } else {
+                    showMessage('Board não encontrado', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function createCard(event) {
+            event.preventDefault();
+            
+            if (!currentBoard) {
+                showMessage('Selecione um board primeiro', 'error');
+                return;
+            }
+
+            const title = document.getElementById('cardTitle').value;
+            const description = document.getElementById('cardDescription').value;
+            
+            try {
+                const response = await fetch('/api/cards', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        title, 
+                        description, 
+                        boardId: currentBoard.id 
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Card criado com sucesso');
+                    closeModal('createCardModal');
+                    document.getElementById('cardTitle').value = '';
+                    document.getElementById('cardDescription').value = '';
+                    loadCurrentBoard();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao criar card', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function loadCurrentBoard() {
+            if (!currentBoard) return;
+
+            try {
+                const response = await fetch(`/api/boards/${currentBoard.id}`);
+                if (response.ok) {
+                    const board = await response.json();
+                    currentBoard = board;
+                    renderBoard(board);
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar board', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        function renderBoard(board) {
+            const boardContent = document.getElementById('boardContent');
+            boardContent.innerHTML = '';
+
+            board.columns.forEach(column => {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
+                
+                columnDiv.innerHTML = `
+                    <h3>${column.name} (${column.cardsAmount})</h3>
+                    <div class="column-content" data-column-id="${column.id}">
+                        <p>Carregando cards...</p>
+                    </div>
+                `;
+                
+                boardContent.appendChild(columnDiv);
+                loadColumnCards(column.id);
+            });
+        }
+
+        async function loadColumnCards(columnId) {
+            // Como não temos endpoint específico para cards de uma coluna,
+            // vamos simular com uma lista vazia por enquanto
+            const columnContent = document.querySelector(`[data-column-id="${columnId}"]`);
+            columnContent.innerHTML = '<p style="color: #999; font-style: italic;">Nenhum card nesta coluna</p>';
+        }
+
+        async function showCardActions(cardId) {
+            try {
+                const response = await fetch(`/api/cards/${cardId}`);
+                if (response.ok) {
+                    const card = await response.json();
+                    
+                    document.getElementById('cardActionTitle').textContent = `Card: ${card.title}`;
+                    
+                    const actionsHtml = `
+                        <div style="margin-bottom: 20px;">
+                            <p><strong>Descrição:</strong> ${card.description}</p>
+                            <p><strong>Coluna:</strong> ${card.columnName}</p>
+                            <p><strong>Status:</strong> ${card.blocked ? `Bloqueado - ${card.blockReason}` : 'Desbloqueado'}</p>
+                            <p><strong>Bloqueios:</strong> ${card.blocksAmount}</p>
+                        </div>
+                        
+                        <div class="board-actions">
+                            ${!card.blocked ? `<button class="btn" onclick="moveCard(${cardId})">Mover</button>` : ''}
+                            ${!card.blocked ? `<button class="btn" onclick="showBlockCardForm(${cardId})">Bloquear</button>` : ''}
+                            ${card.blocked ? `<button class="btn btn-success" onclick="showUnblockCardForm(${cardId})">Desbloquear</button>` : ''}
+                            <button class="btn btn-danger" onclick="cancelCard(${cardId})">Cancelar</button>
+                        </div>
+                        
+                        <div id="cardActionForm"></div>
+                    `;
+                    
+                    document.getElementById('cardActionContent').innerHTML = actionsHtml;
+                    document.getElementById('cardActionModal').style.display = 'block';
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar card', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function moveCard(cardId) {
+            try {
+                const response = await fetch('/api/cards', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardId,
+                        action: 'move',
+                        boardId: currentBoard.id
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Card movido com sucesso');
+                    closeModal('cardActionModal');
+                    loadCurrentBoard();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao mover card', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        function showBlockCardForm(cardId) {
+            document.getElementById('cardActionForm').innerHTML = `
+                <div class="input-group">
+                    <label for="blockReason">Motivo do bloqueio:</label>
+                    <textarea id="blockReason" rows="3" required></textarea>
+                </div>
+                <button class="btn btn-danger" onclick="blockCard(${cardId})">Confirmar Bloqueio</button>
+            `;
+        }
+
+        async function blockCard(cardId) {
+            const reason = document.getElementById('blockReason').value;
+            
+            if (!reason.trim()) {
+                showMessage('Informe o motivo do bloqueio', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cards', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardId,
+                        action: 'block',
+                        reason,
+                        boardId: currentBoard.id
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Card bloqueado com sucesso');
+                    closeModal('cardActionModal');
+                    loadCurrentBoard();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao bloquear card', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        function showUnblockCardForm(cardId) {
+            document.getElementById('cardActionForm').innerHTML = `
+                <div class="input-group">
+                    <label for="unblockReason">Motivo do desbloqueio:</label>
+                    <textarea id="unblockReason" rows="3" required></textarea>
+                </div>
+                <button class="btn btn-success" onclick="unblockCard(${cardId})">Confirmar Desbloqueio</button>
+            `;
+        }
+
+        async function unblockCard(cardId) {
+            const reason = document.getElementById('unblockReason').value;
+            
+            if (!reason.trim()) {
+                showMessage('Informe o motivo do desbloqueio', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cards', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardId,
+                        action: 'unblock',
+                        reason
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Card desbloqueado com sucesso');
+                    closeModal('cardActionModal');
+                    loadCurrentBoard();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao desbloquear card', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function cancelCard(cardId) {
+            if (!confirm('Tem certeza que deseja cancelar este card?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cards', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardId,
+                        action: 'cancel',
+                        boardId: currentBoard.id
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Card cancelado com sucesso');
+                    closeModal('cardActionModal');
+                    loadCurrentBoard();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Erro ao cancelar card', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        function backToMain() {
+            currentBoard = null;
+            document.getElementById('boardView').classList.add('hidden');
+            showMessage('Voltou ao menu principal');
+        }
+
+        // Fechar modal clicando fora
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Simulação de cards para demonstração visual
+        function simulateCards() {
+            if (!currentBoard) return;
+            
+            // Adicionar alguns cards de exemplo para visualização
+            currentBoard.columns.forEach((column, index) => {
+                const columnContent = document.querySelector(`[data-column-id="${column.id}"]`);
+                if (column.cardsAmount === 0) {
+                    columnContent.innerHTML = '<p style="color: #999; font-style: italic;">Nenhum card nesta coluna</p>';
+                } else {
+                    // Simular alguns cards para demonstração
+                    let cardsHtml = '';
+                    for (let i = 1; i <= Math.min(column.cardsAmount, 3); i++) {
+                        const isBlocked = Math.random() > 0.8;
+                        cardsHtml += `
+                            <div class="card-item ${isBlocked ? 'card-blocked' : ''}" onclick="showCardActions(${index * 10 + i})">
+                                <div style="font-weight: bold;">Card Exemplo ${i}</div>
+                                <div style="font-size: 12px; color: #666;">Descrição do card ${i}</div>
+                                ${isBlocked ? '<span class="status-badge status-blocked">BLOQUEADO</span>' : ''}
+                            </div>
+                        `;
+                    }
+                    columnContent.innerHTML = cardsHtml;
+                }
+            });
+        }
+
+        // Chamar simulação após carregar o board
+        const originalLoadCurrentBoard = loadCurrentBoard;
+        loadCurrentBoard = async function() {
+            await originalLoadCurrentBoard();
+            setTimeout(simulateCards, 100);
+        };
+    </script>
+</body>
+</html>
