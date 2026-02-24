@@ -16,7 +16,6 @@ import java.util.List;
 import static br.com.dio.persistence.entity.BoardColumnKindEnum.CANCEL;
 import static br.com.dio.persistence.entity.BoardColumnKindEnum.FINAL;
 
-
 @AllArgsConstructor
 public class CardService {
 
@@ -142,4 +141,26 @@ public class CardService {
         }
     }
 
+    // 🚀 Novo método para excluir cards
+    public void delete(final Long cardId) throws SQLException {
+        try {
+            var dao = new CardDAO(connection);
+            var optional = dao.findById(cardId);
+
+            var dto = optional.orElseThrow(
+                () -> new EntityNotFoundException("O card de id %s não foi encontrado".formatted(cardId))
+            );
+
+            if (dto.blocked()) {
+                throw new CardBlockedException("O card %s está bloqueado e não pode ser excluído".formatted(cardId));
+            }
+
+            dao.delete(cardId); // precisa existir no CardDAO
+            connection.commit();
+            System.out.println("Card excluído com sucesso!");
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        }
+    }
 }
