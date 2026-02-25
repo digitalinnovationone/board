@@ -85,4 +85,12 @@ public class CardDAO {
         return Optional.empty();
     }
 
+    // 🚀 Novo método para excluir cards
+    public void delete(Long id) throws SQLException {
+        var sql = "DELETE FROM CARDS WHERE id = ?;";
+        try (var statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        }
+    }
 }
