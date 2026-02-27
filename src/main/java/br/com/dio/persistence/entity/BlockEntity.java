@@ -1,10 +1,14 @@
 package br.com.dio.persistence.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.OffsetDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class BlockEntity {
 
     private Long id;
@@ -13,4 +17,10 @@ public class BlockEntity {
     private OffsetDateTime unblockedAt;
     private String unblockReason;
 
+    /**
+     * Retorna true se o card está bloqueado atualmente.
+     */
+    public boolean isBlocked() {
+        return blockedAt != null && unblockedAt == null;
+    }
 }

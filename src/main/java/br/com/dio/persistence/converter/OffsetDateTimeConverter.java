@@ -4,20 +4,21 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
-import static java.time.ZoneOffset.UTC;
 import static java.util.Objects.nonNull;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public final class OffsetDateTimeConverter {
 
-    public static OffsetDateTime toOffsetDateTime(final Timestamp value){
-        return nonNull(value) ? OffsetDateTime.ofInstant(value.toInstant(), UTC) : null;
+    private static final ZoneOffset UTC = ZoneOffset.UTC;
+
+    public static OffsetDateTime toOffsetDateTime(Timestamp timestamp) {
+        return nonNull(timestamp) ? OffsetDateTime.ofInstant(timestamp.toInstant(), UTC) : null;
     }
 
-    public static Timestamp toTimestamp(final OffsetDateTime value){
-        return nonNull(value) ? Timestamp.valueOf(value.atZoneSameInstant(UTC).toLocalDateTime()) : null;
+    public static Timestamp toTimestamp(OffsetDateTime dateTime) {
+        return nonNull(dateTime) ? Timestamp.valueOf(dateTime.atZoneSameInstant(UTC).toLocalDateTime()) : null;
     }
-
 }
