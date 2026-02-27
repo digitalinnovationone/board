@@ -11,13 +11,13 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class ConnectionConfig {
 
+    private static final String URL = "jdbc:mysql://localhost/board";
+    private static final String USER = "board";
+    private static final String PASSWORD = "board";
+
     public static Connection getConnection() throws SQLException {
-        var url = "jdbc:mysql://localhost/board";
-        var user = "board";
-        var password = "board";
-        var connection = DriverManager.getConnection(url, user, password);
+        Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
         connection.setAutoCommit(false);
         return connection;
     }
-
 }
