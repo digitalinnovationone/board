@@ -1,41 +1,185 @@
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408191938.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408210954.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408211004.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408211005.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408281807.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
-INFORMAÇÕES: Reading from board.DATABASECHANGELOG
-Database is up to date, no changesets to execute
-ago. 29, 2024 10:37:26 AM liquibase.changelog
-INFORMAÇÕES: Reading from board.DATABASECHANGELOG
+mar. 14, 2026 12:20:08 AM liquibase.changelog
+INFORMAÇÕES: Creating database history table with name: board.databasechangelog
+mar. 14, 2026 12:20:08 AM liquibase.changelog
+INFORMAÇÕES: Reading from board.databasechangelog
+mar. 14, 2026 12:20:09 AM liquibase.executor
+ADVERTÊNCIA: Name 'PK_DATABASECHANGELOGLOCK' ignored for PRIMARY key.
+mar. 14, 2026 12:20:09 AM liquibase.lockservice
+INFORMAÇÕES: Successfully acquired change log lock
+mar. 14, 2026 12:20:09 AM liquibase.command
+INFORMAÇÕES: Using deploymentId: 3458409227
+mar. 14, 2026 12:20:09 AM liquibase.changelog
+INFORMAÇÕES: Reading from board.databasechangelog
+Running Changeset: db/changelog/migrations/db.changelog-202408191938.sql::202408191938::junior
+mar. 14, 2026 12:20:09 AM liquibase.changelog
+GRAVE: ChangeSet db/changelog/migrations/db.changelog-202408191938.sql::202408191938::junior encountered an exception.
+liquibase.exception.DatabaseException: Table 'boards' already exists [Failed SQL: (1050) CREATE TABLE BOARDS(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB]
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:476)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:83)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:185)
+	at liquibase.executor.AbstractExecutor.execute(AbstractExecutor.java:141)
+	at liquibase.database.AbstractJdbcDatabase.executeStatements(AbstractJdbcDatabase.java:1189)
+	at liquibase.changelog.ChangeSet.execute(ChangeSet.java:775)
+	at liquibase.changelog.visitor.UpdateVisitor.executeAcceptedChange(UpdateVisitor.java:119)
+	at liquibase.changelog.visitor.UpdateVisitor.visit(UpdateVisitor.java:68)
+	at liquibase.changelog.ChangeLogIterator.lambda$run$0(ChangeLogIterator.java:131)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.changelog.ChangeLogIterator.lambda$run$1(ChangeLogIterator.java:120)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.Scope.child(Scope.java:257)
+	at liquibase.Scope.child(Scope.java:261)
+	at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:89)
+	at liquibase.command.core.AbstractUpdateCommandStep.lambda$run$0(AbstractUpdateCommandStep.java:113)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.command.core.AbstractUpdateCommandStep.run(AbstractUpdateCommandStep.java:111)
+	at liquibase.command.core.UpdateCommandStep.run(UpdateCommandStep.java:105)
+	at liquibase.command.CommandScope.execute(CommandScope.java:220)
+	at liquibase.Liquibase.lambda$update$0(Liquibase.java:216)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.Liquibase.runInScope(Liquibase.java:1290)
+	at liquibase.Liquibase.update(Liquibase.java:205)
+	at liquibase.Liquibase.update(Liquibase.java:188)
+	at liquibase.Liquibase.update(Liquibase.java:175)
+	at liquibase.Liquibase.update(Liquibase.java:155)
+	at br.com.dio.persistence.migration.MigrationStrategy.executeMigration(MigrationStrategy.java:36)
+	at br.com.dio.Main.main(Main.java:15)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'boards' already exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:763)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:648)
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:470)
+	... 40 more
+
 
 UPDATE SUMMARY
 Run:                          0
-Previously run:               5
+Previously run:               0
 Filtered out:                 0
 -------------------------------
 Total change sets:            5
 
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: UPDATE SUMMARY
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: Run:                          0
-ago. 29, 2024 10:37:26 AM liquibase.util
-INFORMAÇÕES: Previously run:               5
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
+INFORMAÇÕES: Previously run:               0
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: Filtered out:                 0
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: -------------------------------
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: Total change sets:            5
-ago. 29, 2024 10:37:26 AM liquibase.util
+mar. 14, 2026 12:20:09 AM liquibase.util
 INFORMAÇÕES: Update summary generated
-ago. 29, 2024 10:37:26 AM liquibase.lockservice
+mar. 14, 2026 12:20:09 AM liquibase.command
+INFORMAÇÕES: Update command encountered an exception.
+mar. 14, 2026 12:20:09 AM liquibase.lockservice
 INFORMAÇÕES: Successfully released change log lock
-ago. 29, 2024 10:37:26 AM liquibase.command
+mar. 14, 2026 12:20:09 AM liquibase.command
+INFORMAÇÕES: Logging exception.
+ERROR: Exception Details
+ERROR: Exception Primary Class:  SQLSyntaxErrorException
+ERROR: Exception Primary Reason:  Table 'boards' already exists
+ERROR: Exception Primary Source:  MySQL 5.5.5-10.4.32-MariaDB
+mar. 14, 2026 12:20:09 AM liquibase.command
 INFORMAÇÕES: Command execution complete
+liquibase.exception.CommandExecutionException: liquibase.exception.LiquibaseException: liquibase.exception.MigrationFailedException: Migration failed for changeset db/changelog/migrations/db.changelog-202408191938.sql::202408191938::junior:
+     Reason: liquibase.exception.DatabaseException: Table 'boards' already exists [Failed SQL: (1050) CREATE TABLE BOARDS(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB]
+	at liquibase.command.CommandScope.execute(CommandScope.java:258)
+	at liquibase.Liquibase.lambda$update$0(Liquibase.java:216)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.Liquibase.runInScope(Liquibase.java:1290)
+	at liquibase.Liquibase.update(Liquibase.java:205)
+	at liquibase.Liquibase.update(Liquibase.java:188)
+	at liquibase.Liquibase.update(Liquibase.java:175)
+	at liquibase.Liquibase.update(Liquibase.java:155)
+	at br.com.dio.persistence.migration.MigrationStrategy.executeMigration(MigrationStrategy.java:36)
+	at br.com.dio.Main.main(Main.java:15)
+Caused by: liquibase.exception.LiquibaseException: liquibase.exception.MigrationFailedException: Migration failed for changeset db/changelog/migrations/db.changelog-202408191938.sql::202408191938::junior:
+     Reason: liquibase.exception.DatabaseException: Table 'boards' already exists [Failed SQL: (1050) CREATE TABLE BOARDS(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB]
+	at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:148)
+	at liquibase.command.core.AbstractUpdateCommandStep.lambda$run$0(AbstractUpdateCommandStep.java:113)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.command.core.AbstractUpdateCommandStep.run(AbstractUpdateCommandStep.java:111)
+	at liquibase.command.core.UpdateCommandStep.run(UpdateCommandStep.java:105)
+	at liquibase.command.CommandScope.execute(CommandScope.java:220)
+	... 12 more
+Caused by: liquibase.exception.MigrationFailedException: Migration failed for changeset db/changelog/migrations/db.changelog-202408191938.sql::202408191938::junior:
+     Reason: liquibase.exception.DatabaseException: Table 'boards' already exists [Failed SQL: (1050) CREATE TABLE BOARDS(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB]
+	at liquibase.changelog.ChangeSet.execute(ChangeSet.java:819)
+	at liquibase.changelog.visitor.UpdateVisitor.executeAcceptedChange(UpdateVisitor.java:119)
+	at liquibase.changelog.visitor.UpdateVisitor.visit(UpdateVisitor.java:68)
+	at liquibase.changelog.ChangeLogIterator.lambda$run$0(ChangeLogIterator.java:131)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.changelog.ChangeLogIterator.lambda$run$1(ChangeLogIterator.java:120)
+	at liquibase.Scope.lambda$child$0(Scope.java:191)
+	at liquibase.Scope.child(Scope.java:200)
+	at liquibase.Scope.child(Scope.java:190)
+	at liquibase.Scope.child(Scope.java:169)
+	at liquibase.Scope.child(Scope.java:257)
+	at liquibase.Scope.child(Scope.java:261)
+	at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:89)
+	... 20 more
+Caused by: liquibase.exception.DatabaseException: Table 'boards' already exists [Failed SQL: (1050) CREATE TABLE BOARDS(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB]
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:476)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:83)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:185)
+	at liquibase.executor.AbstractExecutor.execute(AbstractExecutor.java:141)
+	at liquibase.database.AbstractJdbcDatabase.executeStatements(AbstractJdbcDatabase.java:1189)
+	at liquibase.changelog.ChangeSet.execute(ChangeSet.java:775)
+	... 35 more
+Caused by: java.sql.SQLSyntaxErrorException: Table 'boards' already exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:763)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:648)
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:470)
+	... 40 more
