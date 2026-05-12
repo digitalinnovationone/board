@@ -17,6 +17,14 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs("src/main/java")
+        }
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }
