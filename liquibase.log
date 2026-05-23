@@ -1,18 +1,18 @@
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mai. 23, 2026 4:59:57 PM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408191938.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mai. 23, 2026 4:59:57 PM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408210954.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mai. 23, 2026 4:59:57 PM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408211004.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mai. 23, 2026 4:59:57 PM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408211005.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
+mai. 23, 2026 4:59:57 PM liquibase.changelog
 INFORMAÇÕES: Reading resource: db/changelog/migrations/db.changelog-202408281807.sql
-ago. 29, 2024 10:37:26 AM liquibase.changelog
-INFORMAÇÕES: Reading from board.DATABASECHANGELOG
+mai. 23, 2026 4:59:57 PM liquibase.changelog
+INFORMAÇÕES: Reading from board.databasechangelog
 Database is up to date, no changesets to execute
-ago. 29, 2024 10:37:26 AM liquibase.changelog
-INFORMAÇÕES: Reading from board.DATABASECHANGELOG
+mai. 23, 2026 4:59:57 PM liquibase.changelog
+INFORMAÇÕES: Reading from board.databasechangelog
 
 UPDATE SUMMARY
 Run:                          0
@@ -21,21 +21,21 @@ Filtered out:                 0
 -------------------------------
 Total change sets:            5
 
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: UPDATE SUMMARY
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: Run:                          0
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: Previously run:               5
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: Filtered out:                 0
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: -------------------------------
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: Total change sets:            5
-ago. 29, 2024 10:37:26 AM liquibase.util
+mai. 23, 2026 4:59:57 PM liquibase.util
 INFORMAÇÕES: Update summary generated
-ago. 29, 2024 10:37:26 AM liquibase.lockservice
+mai. 23, 2026 4:59:57 PM liquibase.lockservice
 INFORMAÇÕES: Successfully released change log lock
-ago. 29, 2024 10:37:26 AM liquibase.command
+mai. 23, 2026 4:59:57 PM liquibase.command
 INFORMAÇÕES: Command execution complete

@@ -32,10 +32,10 @@ public class BoardMenu {
                 System.out.println("3 - Bloquear um card");
                 System.out.println("4 - Desbloquear um card");
                 System.out.println("5 - Cancelar um card");
-                System.out.println("6 - Ver board");
+                System.out.println("6 - Ver o conteúdo da board");
                 System.out.println("7 - Ver coluna com cards");
                 System.out.println("8 - Ver card");
-                System.out.println("9 - Voltar para o menu anterior um card");
+                System.out.println("9 - Voltar para o menu anterior ao card (board)");
                 System.out.println("10 - Sair");
                 option = scanner.nextInt();
                 switch (option) {
@@ -47,7 +47,7 @@ public class BoardMenu {
                     case 6 -> showBoard();
                     case 7 -> showColumn();
                     case 8 -> showCard();
-                    case 9 -> System.out.println("Voltando para o menu anterior");
+                    case 9 -> System.out.println("Voltando para o menu anterior (board)");
                     case 10 -> System.exit(0);
                     default -> System.out.println("Opção inválida, informe uma opção do menu");
                 }
