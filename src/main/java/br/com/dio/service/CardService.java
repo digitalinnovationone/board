@@ -42,7 +42,7 @@ public class CardService {
                     () -> new EntityNotFoundException("O card de id %s não foi encontrado".formatted(cardId))
             );
             if (dto.blocked()){
-                var message = "O card %s está bloqueado, é necesário desbloquea-lo para mover".formatted(cardId);
+                var message = "O card %s está bloqueado, é necesário que esteja desbloqueado para mover".formatted(cardId);
                 throw new CardBlockedException(message);
             }
             var currentColumn = boardColumnsInfo.stream()
@@ -72,7 +72,7 @@ public class CardService {
                     () -> new EntityNotFoundException("O card de id %s não foi encontrado".formatted(cardId))
             );
             if (dto.blocked()){
-                var message = "O card %s está bloqueado, é necesário desbloquea-lo para mover".formatted(cardId);
+                var message = "O card %s está bloqueado, é necesário que esteja desbloqueado para mover".formatted(cardId);
                 throw new CardBlockedException(message);
             }
             var currentColumn = boardColumnsInfo.stream()

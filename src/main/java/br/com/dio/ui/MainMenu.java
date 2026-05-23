@@ -67,7 +67,7 @@ public class MainMenu {
         var finalColumn = createColumn(finalColumnName, FINAL, additionalColumns + 1);
         columns.add(finalColumn);
 
-        System.out.println("Informe o nome da coluna de cancelamento do baord");
+        System.out.println("Informe o nome da coluna de cancelamento do board");
         var cancelColumnName = scanner.next();
         var cancelColumn = createColumn(cancelColumnName, CANCEL, additionalColumns + 2);
         columns.add(cancelColumn);
@@ -81,7 +81,7 @@ public class MainMenu {
     }
 
     private void selectBoard() throws SQLException {
-        System.out.println("Informe o id do board que deseja selecionar");
+        System.out.println("Informe o ID do board que deseja selecionar");
         var id = scanner.nextLong();
         try(var connection = getConnection()){
             var queryService = new BoardQueryService(connection);
@@ -94,7 +94,7 @@ public class MainMenu {
     }
 
     private void deleteBoard() throws SQLException {
-        System.out.println("Informe o id do board que será excluido");
+        System.out.println("Informe o id do board que deseja excluir");
         var id = scanner.nextLong();
         try(var connection = getConnection()){
             var service = new BoardService(connection);
